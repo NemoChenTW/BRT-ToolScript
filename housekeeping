@@ -1,0 +1,48 @@
+#!/bin/bash
+
+#Delete the file older than X days.
+#./housekeeping /path/to/your/folder days
+
+#Input argument check.
+if [ $# -ne 2 ]
+  then
+    echo "No arguments supplied"
+fi
+
+#Search match file.
+FIND="find $1 -type f -mtime +$2"
+
+#Count number of match file.
+numFile=$($FIND | wc -l)
+
+$FIND
+
+#Output search result.
+echo
+if [[ $numFile == 0 ]]; then
+	echo "No file match."
+	exit
+elif [[ $numFile == 1 ]]; then
+	echo "Do you wish to delete this file?"
+else
+	echo "Do you wish to delete these $numFile files?"
+fi
+
+#Delete confirm.
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) $FIND -delete; break;;
+        No ) exit;;
+    esac
+done
+
+#Result check.
+remainFile=$($FIND | wc -l)
+
+echo
+if [[ $remainFile == 0 ]]; then
+	echo "Delete success."
+else
+	echo "$remainFile delete fail."
+	$FIND
+fi
