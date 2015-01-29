@@ -17,3 +17,6 @@ Kill all BRT running programs.
 
 ##timeSync.sh
 Synchronize with the CHT time server.
+
+##housekeeping
+Delete the file older than X days.
